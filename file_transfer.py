@@ -7,7 +7,7 @@ import paramiko
 from scp import SCPClient
 ssh_tunnel_flag=0
 def_start=1
-radio_value=1
+radio_value=2
 radio_fileput_down_value=1
 current_ip=""
 current_device_rate=""
@@ -220,7 +220,7 @@ def file_transfer_Window(MY_GUI):
         elif radio_fileput_down_value==2:
             file_trans_get()
 
-
+    #文件传输方式，1为SFTP 2为SCP
     r_value = IntVar()  #创建一个Int类型的容器,将单选按钮绑定到同一个容器上
     r_value.set(2)  #默认value为1的单选按钮被选中
     def check_radio():
