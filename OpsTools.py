@@ -9,7 +9,7 @@ class MY_GUI():
 
     # 设置窗口
     def set_init_window(self):
-        self.init_window_name.title('Certus SDWAN运维工具 V1.1')
+        self.init_window_name.title('OpsTool V1.1')
         # 1068 680 为窗口大小,+10 +10 定义窗口弹出时的默认弹出位置
         self.init_window_name.geometry('1186x650+20+20')
         # 窗口背景色

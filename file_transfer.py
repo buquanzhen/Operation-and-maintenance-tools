@@ -222,7 +222,7 @@ def file_transfer_Window(MY_GUI):
 
 
     r_value = IntVar()  #创建一个Int类型的容器,将单选按钮绑定到同一个容器上
-    r_value.set(1)  #默认value为1的单选按钮被选中
+    r_value.set(2)  #默认value为1的单选按钮被选中
     def check_radio():
         global radio_value
         radio_value = r_value.get() #获取单选按钮的值
@@ -365,10 +365,11 @@ def file_transfer_Window(MY_GUI):
 
     radio_trans_lab = Label(init_windown_device,text='文件传输方式：')
     radio_trans_lab.grid(sticky=W,row=18, column=0, columnspan=1)
-    radio_trans_1 = Radiobutton(init_windown_device, text="SFTP", variable=r_value,value=1,command=check_radio)
-    radio_trans_1.grid(sticky=W,row=18, column=1, columnspan=1)
     radio_trans_2 = Radiobutton(init_windown_device, text="SCP", variable=r_value,value=2,command=check_radio)
-    radio_trans_2.grid(sticky=W,row=18, column=2, columnspan=1)
+    radio_trans_2.grid(sticky=W,row=18, column=1, columnspan=1)
+    #radio_trans_1 = Radiobutton(init_windown_device, text="SFTP", variable=r_value,value=1,command=check_radio)
+    #radio_trans_1.grid(sticky=W,row=18, column=2, columnspan=1)
+
 
     lab3 = Label(init_windown_device,
                  text='------------------------------------------------------------------------------')
