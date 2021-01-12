@@ -147,112 +147,112 @@ def dbQueryWindow(MY_GUI):
     init_windown_click.geometry('450x600')
 
     db_ip = Label(init_windown_click, text='数据库地址:')
-    db_ip.grid(row=0, column=0)
+    db_ip.grid(sticky=W,row=0, column=0)
     db_ip_text = StringVar()
     db_ip_text.set('172.19.129.121')
     db_Entry = Entry(init_windown_click, textvariable=db_ip_text,validate='focusout',
                          validatecommand=(check_ip_register, '%P'))
-    db_Entry.grid(row=0, column=1)
+    db_Entry.grid(sticky=W,row=0, column=1)
 
     db_port = Label(init_windown_click, text='数据库端口:')
-    db_port.grid(row=0, column=2)
+    db_port.grid(sticky=W,row=0, column=2)
     db_port_text = StringVar()
     db_port_text.set('3306')
     db_port_Entry = Entry(init_windown_click, textvariable=db_port_text, width=6,validate='focusout',
                          validatecommand=(check_port_register, '%P'))
-    db_port_Entry.grid(row=0, column=3)
+    db_port_Entry.grid(sticky=W,row=0, column=3)
 
     db_logname = Label(init_windown_click, text='用户名:')
-    db_logname.grid(row=1, column=0)
+    db_logname.grid(sticky=W,row=1, column=0)
     db_logname_text = StringVar()
     db_logname_text.set('root')
     db_logname_Entry = Entry(init_windown_click, textvariable=db_logname_text)
-    db_logname_Entry.grid(row=1, column=1)
+    db_logname_Entry.grid(sticky=W,row=1, column=1)
 
     db_logpasswd = Label(init_windown_click, text='密码:')
-    db_logpasswd.grid(row=2, column=0)
+    db_logpasswd.grid(sticky=W,row=2, column=0)
     db_logpasswd_text = StringVar()
     db_logpasswd_text.set('Certus@20xx')
     db_logpasswd_Entry = Entry(init_windown_click, textvariable=db_logpasswd_text)
-    db_logpasswd_Entry.grid(row=2, column=1)
+    db_logpasswd_Entry.grid(sticky=W,row=2, column=1)
     # ssh tunnel
     db_ssh_tunnel_ck = Checkbutton(init_windown_click, text='ssh_tunnel', command=db_ssh_tunnel)
-    db_ssh_tunnel_ck.grid(row=3, column=0)
+    db_ssh_tunnel_ck.grid(sticky=W,row=3, column=0)
 
     db_tunnel_ip = Label(init_windown_click, text='IP地址:')
-    db_tunnel_ip.grid(row=4, column=0)
+    db_tunnel_ip.grid(sticky=W,row=4, column=0)
     db_tunnel_ip_text = StringVar()
     db_tunnel_ip_text.set('172.19.129.121')
     db_tunnel_Entry = Entry(init_windown_click, textvariable=db_tunnel_ip_text,validate='focusout',
                          validatecommand=(check_ip_register, '%P'))
-    db_tunnel_Entry.grid(row=4, column=1)
+    db_tunnel_Entry.grid(sticky=W,row=4, column=1)
 
     db_tunnel_port = Label(init_windown_click, text='端口:')
-    db_tunnel_port.grid(row=4, column=2)
+    db_tunnel_port.grid(sticky=W,row=4, column=2)
     db_tunnel_port_text = StringVar()
     db_tunnel_port_text.set('22')
     db_tunnel_port_Entry = Entry(init_windown_click, textvariable=db_tunnel_port_text, width=6,
                                  validate='focusout',validatecommand=(check_port_register, '%P'))
-    db_tunnel_port_Entry.grid(row=4, column=3)
+    db_tunnel_port_Entry.grid(sticky=W,row=4, column=3)
 
     db_tunnel_logname = Label(init_windown_click, text='用户名:')
-    db_tunnel_logname.grid(row=5, column=0)
+    db_tunnel_logname.grid(sticky=W,row=5, column=0)
     db_tunnel_logname_text = StringVar()
     db_tunnel_logname_text.set('root')
     db_tunnel_logname_Entry = Entry(init_windown_click, textvariable=db_tunnel_logname_text)
-    db_tunnel_logname_Entry.grid(row=5, column=1)
+    db_tunnel_logname_Entry.grid(sticky=W,row=5, column=1)
 
     db_tunnel_logpasswd = Label(init_windown_click, text='密码:')
-    db_tunnel_logpasswd.grid(row=6, column=0)
+    db_tunnel_logpasswd.grid(sticky=W,row=6, column=0)
     db_tunnel_logpasswd_text = StringVar()
     db_tunnel_logpasswd_text.set('Certus@20xx')
     db_tunnel_logpasswd_Entry = Entry(init_windown_click, textvariable=db_tunnel_logpasswd_text)
-    db_tunnel_logpasswd_Entry.grid(row=6, column=1)
+    db_tunnel_logpasswd_Entry.grid(sticky=W,row=6, column=1)
     db_connet_butthon = Button(init_windown_click, text='连接数据库', bg='lightblue', width=10, command=check_db)
-    db_connet_butthon.grid(row=7, column=1)
+    db_connet_butthon.grid(sticky=W,row=7, column=1)
 
     # FlexEdge 分割线
     db_lab1 = Label(init_windown_click,
                     text='------------------------------------------------------------------------------')
-    db_lab1.grid(row=8, column=0, columnspan=5)
+    db_lab1.grid(sticky=W,row=8, column=0, columnspan=5)
     db_lab5 = Label(init_windown_click, text='FlexEdge:')
-    db_lab5.grid(row=9, column=0)
+    db_lab5.grid(sticky=W,row=9, column=0)
     # FlexEdge查询按钮
     db_eng_query_name_wan1_butthon = Button(init_windown_click, text='WAN1', bg='lightblue', width=8,
                                             command=flexedge_wan1)
-    db_eng_query_name_wan1_butthon.grid(row=10, column=0)
+    db_eng_query_name_wan1_butthon.grid(sticky=W,row=10, column=0)
     db_eng_query_name_wan2_butthon = Button(init_windown_click, text='WAN2', bg='lightblue', width=8,
                                             command=flexedge_wan2)
-    db_eng_query_name_wan2_butthon.grid(row=10, column=1)
+    db_eng_query_name_wan2_butthon.grid(sticky=W,row=10, column=1)
     db_eng_query_name_allwan_butthon = Button(init_windown_click, text='ALL_PORT', bg='lightblue', width=8,
                                               command=flexedge_all_interface)
-    db_eng_query_name_allwan_butthon.grid(row=11, column=0)
+    db_eng_query_name_allwan_butthon.grid(sticky=W,row=11, column=0)
     db_eng_WAN1_to_init_data_Text_butthon = Button(init_windown_click, text='WAN1_IP', bg='lightblue', width=8,
                                                    command=flexedge_wan1ip_to_init_data_Text)
-    db_eng_WAN1_to_init_data_Text_butthon.grid(row=11, column=1)
+    db_eng_WAN1_to_init_data_Text_butthon.grid(sticky=W,row=11, column=1)
 
     # FlexThinEdge 分割线
     db_lab1 = Label(init_windown_click,
                     text='------------------------------------------------------------------------------')
-    db_lab1.grid(row=12, column=0, columnspan=5)
+    db_lab1.grid(sticky=W,row=12, column=0, columnspan=5)
     db_lab5 = Label(init_windown_click, text='FlexThinEdge:')
-    db_lab5.grid(row=13, column=0)
+    db_lab5.grid(sticky=W,row=13, column=0)
     # FlexThinEdge 按钮
     db_gw_query_name_wan1_butthon = Button(init_windown_click, text='WAN1', bg='lightblue', width=8,
                                            command=flexthinedge_wan1)
-    db_gw_query_name_wan1_butthon.grid(row=14, column=0)
+    db_gw_query_name_wan1_butthon.grid(sticky=W,row=14, column=0)
     db_gw_query_name_wan2_butthon = Button(init_windown_click, text='WAN2', bg='lightblue', width=8,
                                            command=flexthinedge_wan2)
-    db_gw_query_name_wan2_butthon.grid(row=14, column=1)
+    db_gw_query_name_wan2_butthon.grid(sticky=W,row=14, column=1)
     db_gw_query_name_wan3_butthon = Button(init_windown_click, text='WAN3', bg='lightblue', width=8,
                                            command=flexthinedge_wan3)
-    db_gw_query_name_wan3_butthon.grid(row=15, column=0)
+    db_gw_query_name_wan3_butthon.grid(sticky=W,row=15, column=0)
     db_gw_query_name_allwan_butthon = Button(init_windown_click, text='ALL_PORT', bg='lightblue', width=8,
                                              command=flexthinedge_py_all_interface)
-    db_gw_query_name_allwan_butthon.grid(row=15, column=1)
+    db_gw_query_name_allwan_butthon.grid(sticky=W,row=15, column=1)
     db_gw_WAN1_to_init_data_Text_butthon = Button(init_windown_click, text='WAN1_IP', bg='lightblue', width=8,
                                                   command=flexthinedge_wan1ip_to_init_data_Text)
-    db_gw_WAN1_to_init_data_Text_butthon.grid(row=14, column=2)
+    db_gw_WAN1_to_init_data_Text_butthon.grid(sticky=W,row=14, column=2)
 
     # 自定义功能分割线
     db_lab1 = Label(init_windown_click,
@@ -260,14 +260,14 @@ def dbQueryWindow(MY_GUI):
     db_lab1.grid(row=16, column=0, columnspan=5)
 
     db_lab2 = Label(init_windown_click, text='自定义查询:')
-    db_lab2.grid(row=17, column=0)
+    db_lab2.grid(sticky=W,row=17, column=0)
     db_lab3 = Label(init_windown_click, text='select')
-    db_lab3.grid(row=18, column=0)
+    db_lab3.grid(sticky=E,row=18, column=0)
 
     db_sql_text = StringVar()
     db_sql_text.set('* from gm_eng')
     db_sql_Entry = Entry(init_windown_click, textvariable=db_sql_text, width=45)
-    db_sql_Entry.grid(row=18, column=1, columnspan=5)
+    db_sql_Entry.grid(sticky=W,row=18, column=1, columnspan=5)
 
     db_sql_butthon = Button(init_windown_click, text='查询', bg='lightblue', width=8, command=free_sql)
-    db_sql_butthon.grid(row=19, column=0)
+    db_sql_butthon.grid(sticky=W,row=19, column=0)

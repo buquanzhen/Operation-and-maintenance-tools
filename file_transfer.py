@@ -113,9 +113,6 @@ def file_transfer_Window(MY_GUI):
             device_TexT.delete(1.0, END)
             device_TexT.insert(tkinter.INSERT, ip)
             device_TexT.update()
-            lab_device_text = Label(init_windown_device, textvariable=ip)
-            lab_device_text.update()
-            lab_device_text.grid(sticky=W, row=20, column=1)
             #在窗口输出ip传输进度
             count_ip=count_ip+1
             device_rate= str(count_ip)+"/"+str(len(remote_ip_list))

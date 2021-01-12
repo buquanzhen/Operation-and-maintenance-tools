@@ -19,11 +19,11 @@ class MY_GUI():
 
         #标签
         self.init_data_lable=Label(self.init_window_name,text='待处理数据')
-        self.init_data_lable.grid(row=0,column=0)
+        self.init_data_lable.grid(sticky=W,row=0,column=0)
         self.result_data_lable=Label(self.init_window_name,text='输出结果')
-        self.result_data_lable.grid(row=0,column=12)
+        self.result_data_lable.grid(sticky=W,row=0,column=12)
         self.log_lable=Label(self.init_window_name,text='日志')
-        self.log_lable.grid(row=12,column=0)
+        self.log_lable.grid(sticky=W,row=12,column=0)
         #文本框
         self.init_data_Text=Text(self.init_window_name,width=65,height=25) #原始数据录入框
         self.init_data_Text.grid(row=1,column=0,rowspan=10,columnspan=10)
@@ -43,9 +43,9 @@ class MY_GUI():
         self.result_data_scrollbar_y.grid(row=1,column=23,rowspan=15,sticky='NS')
         self.result_data_scrollbar_x.grid(row=14, column=12,columnspan=10,sticky='WE')
 
-        #按钮
-        #self.open_file=Button(self.init_window_name,text='从文件导入IP',bg='lightblue',width=10,command=lambda:utils.get_file_path(self))
-        #self.open_file.grid(row=0,column=1)
+        #清空待处理数据库按钮
+        self.open_file=Button(self.init_window_name,text='清空数据',bg='lightblue',width=10,command=self.clear_data)
+        self.open_file.grid(sticky=W,row=0,column=1)
         self.output_result=Button(self.init_window_name,text='导出结果',bg='lightblue',width=10,command=self.output_result_file)
         self.output_result.grid(row=0,column=13)
         self.db_button=Button(self.init_window_name, text='数据库查询', bg='lightblue', width=10, command= lambda: dbQuery.dbQueryWindow(self))
@@ -70,6 +70,8 @@ class MY_GUI():
                 utils.write_log_to_Text(self.log_data_Text,'保存完成,文件路径:'+ file_path)
             except Exception as e:
                 utils.write_log_to_Text(self.log_data_Text,e)
+    def clear_data(self):
+        self.init_data_Text.delete(1.0, END)
 
 if __name__ == '__main__':
     def gui_start():

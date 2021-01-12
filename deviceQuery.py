@@ -31,8 +31,19 @@ def deviceQueryWindow(MY_GUI):
         for i in range(0, len(cmd_list)):
             check_cmd = check_cmd + cmd_list[i]
             i = i + 1
+        count_ip=0
         for ip in ip_list:          #从地址列表取ip执行查询命令
             global def_start
+            #在窗口输出当前传输设备ip
+            device_TexT.delete(1.0, END)
+            device_TexT.insert(tkinter.INSERT, ip)
+            device_TexT.update()
+            count_ip = count_ip + 1
+            #在窗口输出ip传输进度
+            device_rate= str(count_ip)+"/"+str(len(ip_list))
+            device_rate_TexT.delete(1.0, END)
+            device_rate_TexT.insert(tkinter.INSERT, str(device_rate))
+            device_rate_TexT.update()
             if def_start == 1:  #若def_start值为1则执行查询
                 if check_cmd:
                     device_result = utils.sshlogin(ssh_name, ssh_password, ssh_port, ip,MY_GUI.log_data_Text,cmd_list)
@@ -82,7 +93,17 @@ def deviceQueryWindow(MY_GUI):
         for i in range(0,len(cmd_list)):
             check_cmd=check_cmd+cmd_list[i]
             i=i+1
+        count_ip = 0
         for ip in ip_list:      #从地址列表取ip执行查询命令
+            device_TexT.delete(1.0, END)
+            device_TexT.insert(tkinter.INSERT, ip)
+            device_TexT.update()
+            count_ip=count_ip+1
+            #在窗口输出ip传输进度
+            device_rate= str(count_ip)+"/"+str(len(ip_list))
+            device_rate_TexT.delete(1.0, END)
+            device_rate_TexT.insert(tkinter.INSERT, str(device_rate))
+            device_rate_TexT.update()
             if def_start == 1:  #若def_start值为1则执行查询
                 if check_cmd:    #判断命令列表是否为空，不为空则执行查询
                     device_result = utils.ssh_tunnel_login(ssh_tunnel_ip, ssh_tunnel_port, ssh_tunnel_logname,
@@ -169,95 +190,105 @@ def deviceQueryWindow(MY_GUI):
 
     # ssh tunnel
     ssh_tunnel_ck = Checkbutton(init_windown_device, text='ssh_tunnel', command=ssh_tunnel)
-    ssh_tunnel_ck.grid(row=0, column=0)
+    ssh_tunnel_ck.grid(sticky=W,row=0, column=0)
 
     tunnel_ip = Label(init_windown_device, text='IP地址:')
-    tunnel_ip.grid(row=1, column=0)
+    tunnel_ip.grid(sticky=W,row=1, column=0)
     tunnel_ip_text = StringVar()
     tunnel_ip_text.set('172.19.129.121')
     tunnel_Entry = Entry(init_windown_device, textvariable=tunnel_ip_text, validate='focusout',
                          validatecommand=(check_ip_register, '%P'))
-    tunnel_Entry.grid(row=1, column=1)
+    tunnel_Entry.grid(sticky=W,row=1, column=1)
 
     tunnel_port = Label(init_windown_device, text='端口:')
-    tunnel_port.grid(row=1, column=2)
+    tunnel_port.grid(sticky=W,row=1, column=2)
     tunnel_port_text = StringVar()
     tunnel_port_text.set('22')
     tunnel_port_Entry = Entry(init_windown_device, textvariable=tunnel_port_text, width=6,
                               validate='focusout',validatecommand=(check_port_register, '%P'))
-    tunnel_port_Entry.grid(row=1, column=3)
+    tunnel_port_Entry.grid(sticky=W,row=1, column=3)
 
     tunnel_logname = Label(init_windown_device, text='用户名:')
-    tunnel_logname.grid(row=2, column=0)
+    tunnel_logname.grid(sticky=W,row=2, column=0)
     tunnel_logname_text = StringVar()
     tunnel_logname_text.set('root')
     tunnel_logname_Entry = Entry(init_windown_device, textvariable=tunnel_logname_text)
-    tunnel_logname_Entry.grid(row=2, column=1)
+    tunnel_logname_Entry.grid(sticky=W,row=2, column=1)
 
     tunnel_logpasswd = Label(init_windown_device, text='密码:')
-    tunnel_logpasswd.grid(row=3, column=0)
+    tunnel_logpasswd.grid(sticky=W,row=3, column=0)
     tunnel_logpasswd_text = StringVar()
     tunnel_logpasswd_text.set('Certus@20xx')
     tunnel_logpasswd_Entry = Entry(init_windown_device, textvariable=tunnel_logpasswd_text)
-    tunnel_logpasswd_Entry.grid(row=3, column=1)
+    tunnel_logpasswd_Entry.grid(sticky=W,row=3, column=1)
 
     lab1 = Label(init_windown_device,
                  text='------------------------------------------------------------------------------')
-    lab1.grid(row=4, column=0, columnspan=5)
+    lab1.grid(sticky=W,row=4, column=0, columnspan=5)
 
     ssh_lab1 = Label(init_windown_device,
                      text='ssh登录设置')
-    ssh_lab1.grid(row=5, column=0)
+    ssh_lab1.grid(sticky=W,row=5, column=0)
     ssh_logname = Label(init_windown_device, text='用户名:')
-    ssh_logname.grid(row=7, column=0)
+    ssh_logname.grid(sticky=W,row=7, column=0)
     ssh_logname_text = StringVar()
     ssh_logname_text.set('root')
     ssh_logname_Entry = Entry(init_windown_device, textvariable=ssh_logname_text)
-    ssh_logname_Entry.grid(row=7, column=1)
+    ssh_logname_Entry.grid(sticky=W,row=7, column=1)
 
     ssh_logpasswd = Label(init_windown_device, text='密码:')
-    ssh_logpasswd.grid(row=8, column=0)
+    ssh_logpasswd.grid(sticky=W,row=8, column=0)
     ssh_logpasswd_text = StringVar()
     ssh_logpasswd_text.set('Certus@20xx')
     ssh_logpasswd_Entry = Entry(init_windown_device, textvariable=ssh_logpasswd_text)
-    ssh_logpasswd_Entry.grid(row=8, column=1)
+    ssh_logpasswd_Entry.grid(sticky=W,row=8, column=1)
 
     ssh_port = Label(init_windown_device, text='端口:')
-    ssh_port.grid(row=8, column=2)
+    ssh_port.grid(sticky=W,row=8, column=2)
     ssh_port_text = StringVar()
     ssh_port_text.set('22')
     ssh_port_Entry = Entry(init_windown_device, textvariable=ssh_port_text, width=6,
                            validate='focusout',validatecommand=(check_port_register, '%P'))
-    ssh_port_Entry.grid(row=8, column=3)
+    ssh_port_Entry.grid(sticky=W,row=8, column=3)
     lab2 = Label(init_windown_device,
                  text='------------------------------------------------------------------------------')
-    lab2.grid(row=9, column=0, columnspan=5)
+    lab2.grid(sticky=W,row=9, column=0, columnspan=5)
     ipfile_open_butthon = Button(init_windown_device, text='导入IP', bg='lightblue', width=10,
                                  command=lambda:utils.get_file_path(MY_GUI))
-    ipfile_open_butthon.grid(row=10, column=0)
+    ipfile_open_butthon.grid(sticky=W,row=10, column=0)
     cmdfile_open_butthon = Button(init_windown_device, text='导入命令', bg='lightblue', width=10,
                                   command=get_cmdfile_path)
-    cmdfile_open_butthon.grid(row=10, column=1)
+    cmdfile_open_butthon.grid(sticky=W,row=10, column=1)
     cmdlab = Label(init_windown_device, text='命令列表:')
-    cmdlab.grid(row=11, column=0)
+    cmdlab.grid(sticky=W,row=11, column=0)
     cmd_Text = Text(init_windown_device, width=55, height=6)  # 命令录入框
-    cmd_Text.grid(row=12, column=0, rowspan=1, columnspan=7)
+    cmd_Text.grid(sticky=W,row=12, column=0, rowspan=1, columnspan=7)
 
     lab3 = Label(init_windown_device,
                  text='------------------------------------------------------------------------------')
-    lab3.grid(row=13, column=0, columnspan=5)
+    lab3.grid(sticky=W,row=13, column=0, columnspan=5)
     radiolab3 = Label(init_windown_device,text='结果输出格式')
-    radiolab3.grid(row=14, column=0, columnspan=1)
+    radiolab3.grid(sticky=W,row=14, column=0, columnspan=1)
 
 
     radio1 = Radiobutton(init_windown_device, text="逐条输出", variable=r_value,value=1,command=check_radio)
-    radio1.grid(row=14, column=1, columnspan=1)
+    radio1.grid(sticky=W,row=14, column=1, columnspan=1)
     radio2 = Radiobutton(init_windown_device, text="合并输出", variable=r_value,value=2,command=check_radio)
-    radio2.grid(row=14, column=2, columnspan=1)
+    radio2.grid(sticky=W,row=14, column=2, columnspan=1)
+
+    lab_device=Label(init_windown_device,text='当前设备IP：')
+    lab_device.grid(sticky=W,row=15, column=0, columnspan=1)
+    device_TexT = Text(init_windown_device, width=15, height=1)
+    device_TexT.grid(sticky=W,row=15, column=1)
+
+    lab_device_rate=Label(init_windown_device,text='设备查询进度：')
+    lab_device_rate.grid(sticky=W,row=16, column=0, columnspan=1)
+    device_rate_TexT = Text(init_windown_device, width=13, height=1)
+    device_rate_TexT.grid(sticky=W,row=16, column=1)
 
     query_butthon = Button(init_windown_device, text='开始查询', bg='lightblue', width=10, command=device_query_start)
-    query_butthon.grid(row=15, column=0, columnspan=1)
+    query_butthon.grid(row=17, column=0, columnspan=1)
     query_butthon = Button(init_windown_device, text='结束查询', bg='lightblue', width=10, command=stop)
-    query_butthon.grid(row=15, column=2, columnspan=1)
+    query_butthon.grid(row=17, column=2, columnspan=1)
     query_butthon = Button(init_windown_device, text='暂停', bg='lightblue', width=10, command=suspend)
-    query_butthon.grid(row=15, column=1, columnspan=1)
+    query_butthon.grid(row=17, column=1, columnspan=1)
