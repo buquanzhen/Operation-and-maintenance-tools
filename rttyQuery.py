@@ -135,6 +135,7 @@ def rttyQueryWindow(MY_GUI):
             for i in range(len(port_list)):
                 if port_list[i]=="WAN":
                     wan_port=port_list[i+1]
+                    break
             cmd="ifconfig "+wan_port
             result=rtty_query(cmd,dev_sn)     #获取查询原始结果
             identifier = "inet addr"
@@ -147,6 +148,7 @@ def rttyQueryWindow(MY_GUI):
             for i in range(len(port_list)):
                 if port_list[i] == "WAN2":
                     wan_port = port_list[i + 1]
+                    break
             cmd = "ifconfig " + wan_port
             result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
             identifier = "inet addr"
@@ -154,23 +156,19 @@ def rttyQueryWindow(MY_GUI):
             split_flag = ":"
             data_process(dev_sn, result, identifier, split_flag, out_name)
         #LTE接口地址查询
-        if lte_select.get()==1:
-            cmd1 = "ifconfig usb0"
-            cmd2 = "ifconfig ppp2"
-            result1=rtty_query(cmd1,dev_sn)     #获取查询原始结果
-            result2 = rtty_query(cmd2, dev_sn)
-            #print("r1",result1)
-            #print("r2",result2)
-            if "inet addr" in str(result1):
-                identifier = "inet addr"
-                out_name = "LTE:"
-                split_flag = ":"
-                data_process(dev_sn, result1, identifier, split_flag, out_name)
-            else:
-                identifier = "inet addr"
-                out_name = "LTE:"
-                split_flag = ":"
-                data_process(dev_sn, result2, identifier, split_flag, out_name)
+        if wan3_select.get()==1:
+            port_list = thin_interface(dev_sn)
+            for i in range(len(port_list)):
+                if port_list[i] == "WAN3":
+                    wan_port = port_list[i + 1]
+                    break
+            cmd = "ifconfig " + wan_port
+            result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
+            identifier = "inet addr"
+            out_name = "WAN3:"
+            split_flag = ":"
+            data_process(dev_sn, result, identifier, split_flag, out_name)
+
         #LAN口地址查询
         if lan_select.get()==1:
             cmd = "ifconfig br-LAN"
@@ -375,9 +373,9 @@ def rttyQueryWindow(MY_GUI):
     device_wan2 = Checkbutton(init_windown_rtty, text='WAN2地址', variable=wan2_select,onvalue=1,offvalue=0)
     device_wan2.grid(sticky=W,row=11, column=1)
     #设备LTE接口ip
-    lte_select = IntVar()
-    device_lte = Checkbutton(init_windown_rtty, text='LTE地址', variable=lte_select,onvalue=1,offvalue=0)
-    device_lte.grid(sticky=W,row=11, column=2)
+    wan3_select = IntVar()
+    device_wan3 = Checkbutton(init_windown_rtty, text='WAN3地址', variable=wan3_select,onvalue=1,offvalue=0)
+    device_wan3.grid(sticky=W,row=11, column=2)
     # 设备LAN口地址
     lan_select = IntVar()
     device_lan = Checkbutton(init_windown_rtty, text='LAN地址', variable=lan_select,onvalue=1,offvalue=0)
@@ -434,14 +432,8 @@ def rttyQueryWindow(MY_GUI):
     db_sql_butthon = Button(init_windown_rtty, text='查询', bg='lightblue', width=8, command=query_start)
     db_sql_butthon.grid(sticky=W,row=19, column=0)
 
-    select_alllist=[name_select,model_select,dev_version_select,dev_mode_select,
-                 wan1_select,wan2_select,lte_select,lan_select,vlan_select,
-                 lte_Manufacturer_select,lte_model_select,lte_version_select,
-                 lte_imei_select,lte_sim_select,lte_ccid_select,lte_crge_select,
-                 cqs_select,lte_zcellinfo_select,lte_operator_select]
-
     select_dev_infolist=[name_select,model_select,dev_version_select,dev_mode_select]
-    select_dev_portlist=[wan1_select,wan2_select,lte_select,lan_select,vlan_select]
+    select_dev_portlist=[wan1_select,wan2_select,wan3_select,lan_select,vlan_select]
     select_LTE_list=[lte_Manufacturer_select,lte_model_select,lte_version_select,
                  lte_imei_select,lte_sim_select,lte_ccid_select,lte_crge_select,
                  cqs_select,lte_zcellinfo_select,lte_operator_select]
