@@ -482,7 +482,7 @@ def rttyQueryWindow(MY_GUI):
     radio_dev_info_select_all = Radiobutton(init_windown_rtty, text="全选", variable=r_dev_info_value, value=1,
                                         command=dev_info_select_all)
     radio_dev_info_select_all.grid(sticky=W, row=7, column=1)
-    radio_dev_info_unselect_all = Radiobutton(init_windown_rtty, text="全不选", variable=r_dev_info_value, value=1,
+    radio_dev_info_unselect_all = Radiobutton(init_windown_rtty, text="全不选", variable=r_dev_info_value, value=2,
                                           command=dev_info_unselect_all)
     radio_dev_info_unselect_all.grid(sticky=W, row=7, column=2)
 
