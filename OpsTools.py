@@ -1,7 +1,7 @@
 #_*_ coding: utf-8 _*_
 from tkinter import *
 from tkinter import filedialog,dialog
-import dbQuery,utils, deviceQuery,file_transfer
+import dbQuery,utils, deviceQuery,file_transfer,rttyQuery
 
 class MY_GUI():
     def __init__(self, init_window_name):
@@ -50,10 +50,12 @@ class MY_GUI():
         self.output_result.grid(row=0,column=13)
         self.db_button=Button(self.init_window_name, text='数据库查询', bg='lightblue', width=10, command= lambda: dbQuery.dbQueryWindow(self))
         self.db_button.grid(row=1,column=11)
-        self.device_query_button=Button(self.init_window_name,text='设备查询',bg='lightblue',width=10,command=lambda:deviceQuery.deviceQueryWindow(self))
+        self.device_query_button=Button(self.init_window_name,text='SSH设备查询',bg='lightblue',width=10,command=lambda:deviceQuery.deviceQueryWindow(self))
         self.device_query_button.grid(row=2,column=11)
+        self.rtty_query=Button(self.init_window_name,text='RTTY设备查询',bg='lightblue',width=10,command=lambda:rttyQuery.rttyQueryWindow(self))
+        self.rtty_query.grid(row=3,column=11)
         self.up_down_load_button=Button(self.init_window_name,text='文件传输',bg='lightblue',width=10,command=lambda:file_transfer.file_transfer_Window(self))
-        self.up_down_load_button.grid(row=3,column=11)
+        self.up_down_load_button.grid(row=4,column=11)
 
 
     def output_result_file(self):
