@@ -214,8 +214,7 @@ def dbQueryWindow(MY_GUI):
     db_connet_butthon.grid(sticky=W,row=7, column=1)
 
     # FlexEdge 分割线
-    db_lab1 = Label(init_windown_click,
-                    text='------------------------------------------------------------------------------')
+    db_lab1 = Label(init_windown_click,text='-'*80)
     db_lab1.grid(sticky=W,row=8, column=0, columnspan=5)
     db_lab5 = Label(init_windown_click, text='FlexEdge:')
     db_lab5.grid(sticky=W,row=9, column=0)
@@ -234,8 +233,7 @@ def dbQueryWindow(MY_GUI):
     db_eng_WAN1_to_init_data_Text_butthon.grid(sticky=W,row=11, column=1)
 
     # FlexThinEdge 分割线
-    db_lab1 = Label(init_windown_click,
-                    text='------------------------------------------------------------------------------')
+    db_lab1 = Label(init_windown_click,text='-'*80)
     db_lab1.grid(sticky=W,row=12, column=0, columnspan=5)
     db_lab5 = Label(init_windown_click, text='FlexThinEdge:')
     db_lab5.grid(sticky=W,row=13, column=0)
@@ -257,8 +255,7 @@ def dbQueryWindow(MY_GUI):
     db_gw_WAN1_to_init_data_Text_butthon.grid(sticky=W,row=14, column=2)
 
     # 自定义功能分割线
-    db_lab1 = Label(init_windown_click,
-                    text='------------------------------------------------------------------------------')
+    db_lab1 = Label(init_windown_click,text='-'*80)
     db_lab1.grid(row=16, column=0, columnspan=5)
 
     db_lab2 = Label(init_windown_click, text='自定义查询:')

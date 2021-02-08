@@ -46,7 +46,11 @@ def deviceQueryWindow(MY_GUI):
             device_rate_TexT.update()
             if def_start == 1:  #若def_start值为1则执行查询
                 if check_cmd:
-                    device_result = utils.sshlogin(ssh_name, ssh_password, ssh_port, ip,MY_GUI.log_data_Text,cmd_list)
+                    if ip:  # 判断设备ip是否为空
+                        device_result = utils.sshlogin(ssh_name, ssh_password, ssh_port, ip,MY_GUI.log_data_Text,cmd_list)
+                    else:
+                        utils.write_log_to_Text(MY_GUI.log_data_Text, "设备ip不能为空")
+                        continue
                 else:
                     utils.write_log_to_Text(MY_GUI.log_data_Text, "命令不能为空")
                     break
@@ -60,7 +64,11 @@ def deviceQueryWindow(MY_GUI):
                 else:
                     def_start = 0   #点击提示框‘NO’，停止查询
             result = ''
-            if device_result != None:  # 对查询原始结果进行处理，原始数据为列表
+            if device_result==['']:
+                utils.write_log_to_Text(MY_GUI.log_data_Text, ip + " " + "未查询到数据")
+            elif device_result == None:
+                utils.write_log_to_Text(MY_GUI.log_data_Text, ip + " " + "未查询到数据")
+            else:  # 对查询原始结果进行处理，原始数据为列表
                 if radio_value == 1:  # 单选框返回值为1则结果逐条输出
                     for i in range(0, len(device_result)):
                         result = str(device_result[i])
@@ -108,9 +116,13 @@ def deviceQueryWindow(MY_GUI):
             device_rate_TexT.update()
             if def_start == 1:  #若def_start值为1则执行查询
                 if check_cmd:    #判断命令列表是否为空，不为空则执行查询
-                    device_result = utils.ssh_tunnel_login(ssh_tunnel_ip, ssh_tunnel_port, ssh_tunnel_logname,
-                                                 ssh_tunnel_password, ssh_name, ssh_password, ssh_port, ip,
-                                                 MY_GUI.log_data_Text, cmd_list)
+                    if ip:  #判断设备ip是否为空
+                        device_result = utils.ssh_tunnel_login(ssh_tunnel_ip, ssh_tunnel_port, ssh_tunnel_logname,
+                                                     ssh_tunnel_password, ssh_name, ssh_password, ssh_port, ip,
+                                                     MY_GUI.log_data_Text, cmd_list)
+                    else:
+                        utils.write_log_to_Text(MY_GUI.log_data_Text, "设备ip不能为空")
+                        continue
                 else:   #判断命令列表是否为空，为空则输出log，终止查询
                     utils.write_log_to_Text(MY_GUI.log_data_Text,"命令不能为空")
                     break
@@ -124,7 +136,11 @@ def deviceQueryWindow(MY_GUI):
                 else:
                     def_start = 0   #点击提示框‘NO’，停止查询
             result = ''
-            if device_result != None:   #对查询原始结果进行处理，原始数据为列表
+            if device_result==['']:
+                utils.write_log_to_Text(MY_GUI.log_data_Text, ip + " " + "未查询到数据")
+            elif device_result == None:
+                utils.write_log_to_Text(MY_GUI.log_data_Text, ip + " " + "未查询到数据")
+            else:   #对查询原始结果进行处理，原始数据为列表
                 if radio_value==1:  #单选框返回值为1则结果逐条输出
                     for i in range(0, len(device_result)):
                         result =str(device_result[i])

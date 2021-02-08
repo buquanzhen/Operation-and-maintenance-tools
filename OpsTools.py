@@ -25,15 +25,18 @@ class MY_GUI():
         self.log_lable=Label(self.init_window_name,text='日志')
         self.log_lable.grid(sticky=W,row=12,column=0)
         #文本框
-        menubar = Menu(self.init_window_name, tearoff=False)  # 创建一个菜单
         self.init_data_Text=Text(self.init_window_name,width=65,height=25) #原始数据录入框
         self.init_data_Text.grid(row=1,column=0,rowspan=10,columnspan=10)
         self.init_data_Text.bind("<Button-3>", lambda x: rightKey(x, self.init_data_Text))  # 绑定右键鼠标事件
+        self.init_data_Text.bind("<Button-1>", lambda x: leftKey(x, self.init_data_Text))  # 绑定左键鼠标事件
         self.result_data_Text=Text(self.init_window_name,width=65,height=35)  #输出结果输出框
         self.result_data_Text.grid(row=1,column=12,rowspan=15,columnspan=10)
-
+        self.result_data_Text.bind("<Button-3>", lambda x: rightKey(x, self.result_data_Text))  # 绑定右键鼠标事件
+        self.result_data_Text.bind("<Button-1>", lambda x: leftKey(x, self.result_data_Text))  # 绑定左键鼠标事件
         self.log_data_Text=Text(self.init_window_name,width=65,height=8)    #日志输出框
         self.log_data_Text.grid(row=13,column=0,columnspan=5)
+        self.log_data_Text.bind("<Button-3>", lambda x: rightKey(x, self.log_data_Text))  # 绑定右键鼠标事件
+        self.log_data_Text.bind("<Button-1>", lambda x: leftKey(x, self.log_data_Text))  # 绑定左键鼠标事件
         #滚动条
         self.result_data_scrollbar_y=Scrollbar(self.init_window_name) #创建纵向滚动条
         self.result_data_scrollbar_y.config(command=self.result_data_Text.yview) #将创建的滚动条通过command参数绑定到需要拖动的Text上
@@ -60,20 +63,20 @@ class MY_GUI():
 
         def cut(editor, event=None):
             editor.event_generate("<<Cut>>")
-
-
         def copy(editor, event=None):
             editor.event_generate("<<Copy>>")
-
         def paste(editor, event=None):
             editor.event_generate('<<Paste>>')
-
+        menubar = Menu(self.init_window_name, tearoff=False)  # 创建一个菜单
         def rightKey( event, editor):
             menubar.delete(0, END)
             menubar.add_command(label='剪切', command=lambda: cut(editor))
             menubar.add_command(label='复制', command=lambda: copy(editor))
             menubar.add_command(label='粘贴', command=lambda: paste(editor))
             menubar.post(event.x_root, event.y_root)
+
+        def leftKey(event, editor):
+            menubar.delete(0, END)
 
 
 

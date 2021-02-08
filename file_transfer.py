@@ -297,8 +297,7 @@ def file_transfer_Window(MY_GUI):
     tunnel_logpasswd_Entry = Entry(init_windown_device, textvariable=tunnel_logpasswd_text)
     tunnel_logpasswd_Entry.grid(sticky=W,row=3, column=1)
 
-   # lab1 = Label(init_windown_device,
-    #             text='------------------------------------------------------------------------------')
+   # lab1 = Label(init_windown_device,text='-'*80)
     #lab1.grid(sticky=W,row=4, column=0, columnspan=5)
     """
     ssh_lab1 = Label(init_windown_device,
@@ -325,8 +324,7 @@ def file_transfer_Window(MY_GUI):
     ssh_port_Entry = Entry(init_windown_device, textvariable=ssh_port_text, width=6,
                            validate='focusout', validatecommand=(check_port_register, '%P'))
     ssh_port_Entry.grid(sticky=W,row=8, column=3)
-    lab2 = Label(init_windown_device,
-                 text='------------------------------------------------------------------------------')
+    lab2 = Label(init_windown_device,text='-'*80)
     lab2.grid(sticky=W,row=9, column=0, columnspan=5)
 
     ipfile_open_butthon = Button(init_windown_device, text='导入IP', bg='lightblue', width=10,
@@ -369,8 +367,7 @@ def file_transfer_Window(MY_GUI):
     #radio_trans_1.grid(sticky=W,row=18, column=2, columnspan=1)
 
 
-    lab3 = Label(init_windown_device,
-                 text='------------------------------------------------------------------------------')
+    lab3 = Label(init_windown_device,text='-'*80)
     lab3.grid(sticky=W,row=19, column=0, columnspan=5)
 
     lab_device=Label(init_windown_device,text='当前设备IP：')
