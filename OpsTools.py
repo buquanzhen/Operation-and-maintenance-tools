@@ -25,10 +25,11 @@ class MY_GUI():
         self.log_lable=Label(self.init_window_name,text='日志')
         self.log_lable.grid(sticky=W,row=12,column=0)
         #文本框
+        menubar = Menu(self.init_window_name, tearoff=False)  # 创建一个菜单
         self.init_data_Text=Text(self.init_window_name,width=65,height=25) #原始数据录入框
         self.init_data_Text.grid(row=1,column=0,rowspan=10,columnspan=10)
-
-        self.result_data_Text=Text(self.init_window_name,width=65,height=35) #输出结果输出框
+        self.init_data_Text.bind("<Button-3>", lambda x: rightKey(x, self.init_data_Text))  # 绑定右键鼠标事件
+        self.result_data_Text=Text(self.init_window_name,width=65,height=35)  #输出结果输出框
         self.result_data_Text.grid(row=1,column=12,rowspan=15,columnspan=10)
 
         self.log_data_Text=Text(self.init_window_name,width=65,height=8)    #日志输出框
@@ -57,6 +58,27 @@ class MY_GUI():
         self.up_down_load_button=Button(self.init_window_name,text='文件传输',bg='lightblue',width=10,command=lambda:file_transfer.file_transfer_Window(self))
         self.up_down_load_button.grid(row=4,column=11)
 
+        def cut(editor, event=None):
+            editor.event_generate("<<Cut>>")
+
+
+        def copy(editor, event=None):
+            editor.event_generate("<<Copy>>")
+
+        def paste(editor, event=None):
+            editor.event_generate('<<Paste>>')
+
+        def rightKey( event, editor):
+            menubar.delete(0, END)
+            menubar.add_command(label='剪切', command=lambda: cut(editor))
+            menubar.add_command(label='复制', command=lambda: copy(editor))
+            menubar.add_command(label='粘贴', command=lambda: paste(editor))
+            menubar.post(event.x_root, event.y_root)
+
+
+
+
+
 
     def output_result_file(self):
         file_path = filedialog.asksaveasfilename(title=u'保存文件')
@@ -74,6 +96,10 @@ class MY_GUI():
                 utils.write_log_to_Text(self.log_data_Text,e)
     def clear_data(self):
         self.init_data_Text.delete(1.0, END)
+
+
+
+
 
 if __name__ == '__main__':
     def gui_start():

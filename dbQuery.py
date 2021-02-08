@@ -55,6 +55,7 @@ def dbQueryWindow(MY_GUI):
         if interface_query_value:   #判断查询结果是否为空，若不为空则对结果进行处理
             result_value = interface_query_value[0]  # 从查询结果列表中取出第一个值,结果为一个元组
             MY_GUI.result_data_Text.delete(1.0, END)
+            MY_GUI.result_data_Text.see(END)
             for i in range(0, len(result_value)):  # 从设备元组中取出每个设备
                 result = ''
                 for j in range(0, len(result_value[i])):  # 从每个设备元组中取出每个数值,转换成字符串并进行拼接
@@ -63,6 +64,7 @@ def dbQueryWindow(MY_GUI):
                 # print(result)
                 MY_GUI.result_data_Text.insert(tkinter.INSERT, result + '\n')  # 输出框输出结果
                 MY_GUI.result_data_Text.update()
+                MY_GUI.result_data_Text.see(END)
                 i = i + 1
             utils.write_log_to_Text(MY_GUI.log_data_Text,'数据库数据查询完成')  # 打印日志
 

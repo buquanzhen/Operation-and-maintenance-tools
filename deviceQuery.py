@@ -68,12 +68,14 @@ def deviceQueryWindow(MY_GUI):
                         MY_GUI.result_data_Text.insert(tkinter.INSERT,
                                                        "*" * 20 + ip + "*" * 20 + "\n" + result + '\n' * 2)
                         MY_GUI.result_data_Text.update()
+                        MY_GUI.result_data_Text.see(END)
                 elif radio_value == 2:  # 单选框返回值为2则结果合并为一条输出
                     for i in range(0, len(device_result)):
                         result = result + str(device_result[i]) + ' '
                         i = i + 1
                     MY_GUI.result_data_Text.insert(tkinter.INSERT, result + '\n')
                     MY_GUI.result_data_Text.update()
+                    MY_GUI.result_data_Text.see(END)
                 # print(result)
                 utils.write_log_to_Text(MY_GUI.log_data_Text, ip + " " + "设备数据查询完成")
 
@@ -130,12 +132,14 @@ def deviceQueryWindow(MY_GUI):
                         MY_GUI.result_data_Text.insert(tkinter.INSERT,
                                                        "*" * 20 + ip + "*" * 20 + "\n" + result + '\n' * 2)
                         MY_GUI.result_data_Text.update()
+                        MY_GUI.result_data_Text.see(END)
                 elif radio_value==2:    #单选框返回值为2则结果合并为一条输出
                     for i in range(0, len(device_result)):
                         result = result + str(device_result[i]) + ' '
                         i = i + 1
                     MY_GUI.result_data_Text.insert(tkinter.INSERT, result + '\n')
                     MY_GUI.result_data_Text.update()
+                    MY_GUI.result_data_Text.see(END)
                 # print(result)
                 utils.write_log_to_Text(MY_GUI.log_data_Text,ip + " " + "设备数据查询完成")
 

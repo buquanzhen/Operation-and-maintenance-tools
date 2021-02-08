@@ -84,10 +84,12 @@ def rttyQueryWindow(MY_GUI):
         if result == "":
             MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + "\n")  # 输出结果到页面
             MY_GUI.result_data_Text.update()
+            MY_GUI.result_data_Text.see(END)
             utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " " + out_name + " 未查询到")
         elif result == None:
             MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + "\n")  # 输出结果到页面
             MY_GUI.result_data_Text.update()
+            MY_GUI.result_data_Text.see(END)
             utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " " + out_name + " 未查询到")
         else:
             if identifier in str(result):
@@ -99,10 +101,12 @@ def rttyQueryWindow(MY_GUI):
                         result_out = r3[1]  # 取列表r3第2个元素
                         MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + result_out + "\n")  # 输出结果到页面
                         MY_GUI.result_data_Text.update()
+                        MY_GUI.result_data_Text.see(END)
                         break
             else:
                 MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + "\n")  # 输出结果到页面
                 MY_GUI.result_data_Text.update()
+                MY_GUI.result_data_Text.see(END)
                 utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " " + out_name+" 未查询到")
     def flexthinedge_query(dev_sn):
         #设备名称查询
@@ -118,6 +122,7 @@ def rttyQueryWindow(MY_GUI):
             result_out=dev_model(dev_sn)
             MY_GUI.result_data_Text.insert(tkinter.INSERT, "设备型号:" + result_out + "\n")  # 输出结果到页面
             MY_GUI.result_data_Text.update()
+            MY_GUI.result_data_Text.see(END)
         #设备版本查询
         if dev_version_select.get() == 1:
             cmd = "uci show ovslan"
@@ -175,8 +180,6 @@ def rttyQueryWindow(MY_GUI):
                     split_flag = ":"
                     data_process(dev_sn, result, identifier, split_flag, out_name)
                     break
-
-
         #LAN口地址查询
         if lan_select.get()==1:
             cmd = "ifconfig br-LAN"
@@ -200,6 +203,7 @@ def rttyQueryWindow(MY_GUI):
             if "Quectel" in str(result):    #Quectel模组
                 MY_GUI.result_data_Text.insert(tkinter.INSERT, "模组厂商:" + "Quectel" + "\n")  # 输出结果到页面
                 MY_GUI.result_data_Text.update()
+                MY_GUI.result_data_Text.see(END)
             else:       #高新兴 广和通模组
                 identifier = "Manufacturer"
                 out_name = "模组厂商:"
@@ -284,22 +288,32 @@ def rttyQueryWindow(MY_GUI):
            if result == "":
                MY_GUI.result_data_Text.insert(tkinter.INSERT, "运营商：" + "\n")  # 输出结果到页面
                MY_GUI.result_data_Text.update()
+               MY_GUI.result_data_Text.see(END)
                utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "运营商：" + " 未查询到")
            elif result == None:
                MY_GUI.result_data_Text.insert(tkinter.INSERT, "运营商：" + "\n")  # 输出结果到页面
                MY_GUI.result_data_Text.update()
+               MY_GUI.result_data_Text.see(END)
                utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "运营商：" + " 未查询到")
            else:
                MY_GUI.result_data_Text.insert(tkinter.INSERT, "运营商：" +result+"\n")  # 输出结果到页面
                MY_GUI.result_data_Text.update()
-
-
-
-
+               MY_GUI.result_data_Text.see(END)
     def query_start():
         dev_sn_list = MY_GUI.init_data_Text.get(1.0, END).strip().split('\n')  # 从页面获取sn列表
         #print(dev_sn_list)
+        count_sn = 0
         for dev_sn in dev_sn_list:
+            # 在窗口输出当前传输设备ip
+            dev_TexT.delete(1.0, END)
+            dev_TexT.insert(tkinter.INSERT, dev_sn)
+            dev_TexT.update()
+            # 在窗口输出ip传输进度
+            count_sn = count_sn + 1
+            dev_rate = str(count_sn) + "/" + str(len(dev_sn_list))
+            dev_rate_TexT.delete(1.0, END)
+            dev_rate_TexT.insert(tkinter.INSERT, str(dev_rate))
+            dev_rate_TexT.update()
             if dev_sn:
                 MY_GUI.result_data_Text.insert(tkinter.INSERT, ("=") * 15 + dev_sn + ("=") * 15 + '\n')  # 输出结果到页面
                 MY_GUI.result_data_Text.update()
@@ -436,9 +450,21 @@ def rttyQueryWindow(MY_GUI):
     lte_zcellinfo = Checkbutton(init_windown_rtty, text='频段', variable=lte_zcellinfo_select,onvalue=1,offvalue=0)
     lte_zcellinfo.grid(sticky=W, row=17, column=0)
 
+    lab2 = Label(init_windown_rtty, text='-' * 80)
+    lab2.grid(sticky=W, row=19, column=0, columnspan=5)
+
+    lab_dev = Label(init_windown_rtty, text='当前设备：')
+    lab_dev.grid(sticky=W, row=20, column=0, columnspan=1)
+    dev_TexT = Text(init_windown_rtty, width=15, height=1)
+    dev_TexT.grid(sticky=W, row=20, column=1, columnspan=2)
+
+    lab_dev_rate = Label(init_windown_rtty, text='查询进度：')
+    lab_dev_rate.grid(sticky=W, row=21, column=0, columnspan=1)
+    dev_rate_TexT = Text(init_windown_rtty, width=15, height=1)
+    dev_rate_TexT.grid(sticky=W, row=21, column=1, columnspan=2)
 
     db_sql_butthon = Button(init_windown_rtty, text='查询', bg='lightblue', width=8, command=query_start)
-    db_sql_butthon.grid(sticky=W,row=19, column=0)
+    db_sql_butthon.grid(sticky=W,row=25, column=0)
 
     select_dev_infolist=[name_select,model_select,dev_version_select,dev_mode_select]
     select_dev_portlist=[wan1_select,wan2_select,wan3_select,lan_select,vlan_select]

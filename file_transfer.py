@@ -44,6 +44,7 @@ def file_transfer_Window(MY_GUI):
             result=str(current_ip)+" "+str(current_file_name)+"传输进度："+str(v1)+"%"
             MY_GUI.result_data_Text.insert(tkinter.INSERT, result + '\n')
             MY_GUI.result_data_Text.update()
+            MY_GUI.result_data_Text.see(END)
 
 
 
