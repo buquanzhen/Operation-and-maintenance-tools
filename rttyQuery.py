@@ -4,9 +4,7 @@ import simplejson as simplejson
 import tkinter
 from tkinter import *
 import utils
-from tkinter import messagebox, filedialog
 
-db_tunnel_flag=0
 def rttyQueryWindow(MY_GUI):
     def rtty_query(cmd_str,dev_sn):
         ip=rtty_ip_text.get()
@@ -22,13 +20,17 @@ def rttyQueryWindow(MY_GUI):
             #pattern = re.compile(r'\x1B\[[0-9;]*[a-zA-Z]')
             if len(r11.content) != 0:
                 result = r11.content.decode()
-                if "+COPS:" in str(result):
-                    result=str(result).split("+COPS:")[1].split()[0]
-                    #print(result)
+                if "+COPS:" in str(result):     #运营商查询，因字典对双引号比较敏感，需要在此对查询结果特殊处理
+                    if "7" in str(result):
+                        result=str(result).split("+COPS:")[1].split()[0]
+                        return result
+                    else:
+                        return None
+
                 else:
                     resDict = simplejson.loads(result, strict=False)
                     result=resDict['stdout']
-                return result
+                    return result
         except Exception as e:
             #utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn+"不支持"+cmd_str)
             pass
@@ -52,38 +54,41 @@ def rttyQueryWindow(MY_GUI):
             pass
     #从设备network配置文件获取接口角色对应的实际物理接口
     def thin_interface(dev_sn):
-        cmd="cat /etc/config/network"
-        result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
-        r1 = result.strip().split('\n')
-        #print(r1)
-        result_list = []
-        for i in range(len(r1)): #遍历查询结果的每一个元素，查找包含字符interface和ifname的元素，并加入新的列表
-            r2=str(r1[i].strip())   #去掉每一个元素的前后空格
-            #print(r2)
-            r4=r2.find("interface") #查找包含interface的元素，不包含返回值为-1
-            r5=r2.find("ifname")    #查找包含ifname的元素，不包含返回值为-1
-            #print("r4=",r4)
-            if r4 !=-1:     #如果interface包含在该元素中，则以‘分割，取第二个元素加入新列表
-               r3 = r2.split("\'")
-               #print(r3[1])
-               result_list.append(r3[1])
-               #print(result_list)
-            if r5 !=-1:     #如果ifname包含在该元素中，则以‘分割，取第二个元素加入新列表
-               r3=r2.split("\'")
-               #print(r3[1])
-               result_list.append(r3[1])
-        #print(result_list)
-        return result_list
+        try:
+            cmd="cat /etc/config/network"
+            result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
+            r1 = result.strip().split('\n')
+            #print(r1)
+            result_list = []
+            for i in range(len(r1)): #遍历查询结果的每一个元素，查找包含字符interface和ifname的元素，并加入新的列表
+                r2=str(r1[i].strip())   #去掉每一个元素的前后空格
+                #print(r2)
+                r4=r2.find("interface") #查找包含interface的元素，不包含返回值为-1
+                r5=r2.find("ifname")    #查找包含ifname的元素，不包含返回值为-1
+                #print("r4=",r4)
+                if r4 !=-1:     #如果interface包含在该元素中，则以‘分割，取第二个元素加入新列表
+                   r3 = r2.split("\'")
+                   #print(r3[1])
+                   result_list.append(r3[1])
+                   #print(result_list)
+                if r5 !=-1:     #如果ifname包含在该元素中，则以‘分割，取第二个元素加入新列表
+                   r3=r2.split("\'")
+                   #print(r3[1])
+                   result_list.append(r3[1])
+            #print(result_list)
+            return result_list
+        except Exception as e:
+            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " "+e)
     #处理查询结果，输出处理后的结果到页面  高新兴模组完全支持，其他模组部分支持
     def data_process(dev_sn,result,identifier,split_flag,out_name):
         if result == "":
             MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + "\n")  # 输出结果到页面
             MY_GUI.result_data_Text.update()
-            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + out_name + " 未查询到")
+            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " " + out_name + " 未查询到")
         elif result == None:
             MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + "\n")  # 输出结果到页面
             MY_GUI.result_data_Text.update()
-            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + out_name + " 未查询到")
+            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " " + out_name + " 未查询到")
         else:
             if identifier in str(result):
                 r1 = result.split('\n')  # 以换行符将原始结果分隔成列表
@@ -98,7 +103,7 @@ def rttyQueryWindow(MY_GUI):
             else:
                 MY_GUI.result_data_Text.insert(tkinter.INSERT, out_name + "\n")  # 输出结果到页面
                 MY_GUI.result_data_Text.update()
-                utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + out_name+" 未查询到")
+                utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " " + out_name+" 未查询到")
     def flexthinedge_query(dev_sn):
         #设备名称查询
         if name_select.get()==1:
@@ -135,39 +140,42 @@ def rttyQueryWindow(MY_GUI):
             for i in range(len(port_list)):
                 if port_list[i]=="WAN":
                     wan_port=port_list[i+1]
+                    cmd="ifconfig "+wan_port
+                    result=rtty_query(cmd,dev_sn)     #获取查询原始结果
+                    identifier = "inet addr"
+                    out_name = "WAN:"
+                    split_flag = ":"
+                    data_process(dev_sn, result, identifier, split_flag, out_name)
                     break
-            cmd="ifconfig "+wan_port
-            result=rtty_query(cmd,dev_sn)     #获取查询原始结果
-            identifier = "inet addr"
-            out_name = "WAN:"
-            split_flag = ":"
-            data_process(dev_sn, result, identifier, split_flag, out_name)
+
         #WAN2接口地址查询
         if wan2_select.get()==1:
             port_list = thin_interface(dev_sn)
             for i in range(len(port_list)):
                 if port_list[i] == "WAN2":
                     wan_port = port_list[i + 1]
+                    cmd = "ifconfig " + wan_port
+                    result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
+                    identifier = "inet addr"
+                    out_name = "WAN2:"
+                    split_flag = ":"
+                    data_process(dev_sn, result, identifier, split_flag, out_name)
                     break
-            cmd = "ifconfig " + wan_port
-            result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
-            identifier = "inet addr"
-            out_name = "WAN2:"
-            split_flag = ":"
-            data_process(dev_sn, result, identifier, split_flag, out_name)
-        #LTE接口地址查询
+
+        #WAN3接口地址查询
         if wan3_select.get()==1:
             port_list = thin_interface(dev_sn)
             for i in range(len(port_list)):
                 if port_list[i] == "WAN3":
                     wan_port = port_list[i + 1]
+                    cmd = "ifconfig " + wan_port
+                    result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
+                    identifier = "inet addr"
+                    out_name = "WAN3:"
+                    split_flag = ":"
+                    data_process(dev_sn, result, identifier, split_flag, out_name)
                     break
-            cmd = "ifconfig " + wan_port
-            result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
-            identifier = "inet addr"
-            out_name = "WAN3:"
-            split_flag = ":"
-            data_process(dev_sn, result, identifier, split_flag, out_name)
+
 
         #LAN口地址查询
         if lan_select.get()==1:
@@ -261,7 +269,14 @@ def rttyQueryWindow(MY_GUI):
            out_name = "信号强度:"
            split_flag = ":"
            data_process(dev_sn, result, identifier, split_flag, out_name)
-
+        #频段
+        if lte_zcellinfo_select.get() == 1:
+           cmd = "comtool -e -d /dev/ttyUSB2 -c at+zcellinfo?"
+           result = rtty_query(cmd,dev_sn)  # 获取查询原始结果
+           identifier = "+ZCELLINFO:"
+           out_name = "频段:"
+           split_flag = ":"
+           data_process(dev_sn, result, identifier, split_flag, out_name)
         #运营商
         if lte_operator_select.get() == 1:
            cmd = "comtool -e -d /dev/ttyUSB2 -c at+cops?"
@@ -278,14 +293,7 @@ def rttyQueryWindow(MY_GUI):
                MY_GUI.result_data_Text.insert(tkinter.INSERT, "运营商：" +result+"\n")  # 输出结果到页面
                MY_GUI.result_data_Text.update()
 
-        #频段
-        if lte_zcellinfo_select.get() == 1:
-           cmd = "comtool -e -d /dev/ttyUSB2 -c at+zcellinfo?"
-           result = rtty_query(cmd,dev_sn)  # 获取查询原始结果
-           identifier = "+ZCELLINFO:"
-           out_name = "频段:"
-           split_flag = ":"
-           data_process(dev_sn, result, identifier, split_flag, out_name)
+
 
 
     def query_start():
