@@ -347,7 +347,7 @@ def rttyQueryWindow(MY_GUI):
                 else:
                     utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "设备sn不能为空！")
             elif def_start == 0:  # 若def_start值为0则终止查询并输出log
-                utils.write_log_to_Text(MY_GUI.log_data_Text, "文件传输终止")
+                utils.write_log_to_Text(MY_GUI.log_data_Text, "查询终止")
                 break
             elif def_start == 2:  # 若def_start值为2则暂停查询并弹出提示框
                 mes = messagebox.askyesno('提示', '是否继续执行')

@@ -48,10 +48,12 @@ class MY_GUI():
         self.result_data_scrollbar_x.grid(row=14, column=12,columnspan=10,sticky='WE')
 
         #清空待处理数据库按钮
-        self.open_file=Button(self.init_window_name,text='清空数据',bg='lightblue',width=10,command=self.clear_data)
-        self.open_file.grid(sticky=W,row=0,column=1)
+        self.clear_initdate=Button(self.init_window_name,text='清空数据',bg='lightblue',width=10,command=self.clear_initdata)
+        self.clear_initdate.grid(sticky=W,row=0,column=1)
         self.output_result=Button(self.init_window_name,text='导出结果',bg='lightblue',width=10,command=self.output_result_file)
         self.output_result.grid(row=0,column=13)
+        self.clear_resultdate = Button(self.init_window_name, text='清空数据', bg='lightblue', width=10,command=self.clear_resultdata)
+        self.clear_resultdate.grid(row=0, column=14)
         self.db_button=Button(self.init_window_name, text='数据库查询', bg='lightblue', width=10, command= lambda: dbQuery.dbQueryWindow(self))
         self.db_button.grid(row=1,column=11)
         self.device_query_button=Button(self.init_window_name,text='SSH设备查询',bg='lightblue',width=10,command=lambda:deviceQuery.deviceQueryWindow(self))
@@ -97,8 +99,10 @@ class MY_GUI():
                 utils.write_log_to_Text(self.log_data_Text,'保存完成,文件路径:'+ file_path)
             except Exception as e:
                 utils.write_log_to_Text(self.log_data_Text,e)
-    def clear_data(self):
+    def clear_initdata(self):
         self.init_data_Text.delete(1.0, END)
+    def clear_resultdata(self):
+        self.result_data_Text.delete(1.0, END)
 
 
 
