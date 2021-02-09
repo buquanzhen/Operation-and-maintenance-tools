@@ -66,20 +66,28 @@ def rttyQueryWindow(MY_GUI):
                 #print(r2)
                 r4=r2.find("interface") #查找包含interface的元素，不包含返回值为-1
                 r5=r2.find("ifname")    #查找包含ifname的元素，不包含返回值为-1
+                r6=r2.find("pppoe")
                 #print("r4=",r4)
                 if r4 !=-1:     #如果interface包含在该元素中，则以‘分割，取第二个元素加入新列表
                    r3 = r2.split("\'")
                    #print(r3[1])
                    result_list.append(r3[1])
                    #print(result_list)
+                   continue
+                if r6 !=-1:
+                   r3 = r2.split("\'")
+                   # print(r3[1])
+                   result_list.append(r3[1])
+                   continue
                 if r5 !=-1:     #如果ifname包含在该元素中，则以‘分割，取第二个元素加入新列表
                    r3=r2.split("\'")
                    #print(r3[1])
                    result_list.append(r3[1])
+                   continue
             #print(result_list)
             return result_list
         except Exception as e:
-            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " "+e)
+            utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + " "+str(e))
     #处理查询结果，输出处理后的结果到页面  高新兴模组完全支持，其他模组部分支持
     def data_process(dev_sn,result,identifier,split_flag,out_name):
         if result == "":
@@ -145,7 +153,10 @@ def rttyQueryWindow(MY_GUI):
             port_list=thin_interface(dev_sn)
             for i in range(len(port_list)):
                 if port_list[i]=="WAN":
-                    wan_port=port_list[i+1]
+                    if port_list[i+2]=="pppoe":
+                       wan_port ="pppoe-WAN"
+                    else:
+                        wan_port=port_list[i+1]
                     cmd="ifconfig "+wan_port
                     result=rtty_query(cmd,dev_sn)     #获取查询原始结果
                     identifier = "inet addr"
@@ -159,7 +170,10 @@ def rttyQueryWindow(MY_GUI):
             port_list = thin_interface(dev_sn)
             for i in range(len(port_list)):
                 if port_list[i] == "WAN2":
-                    wan_port = port_list[i + 1]
+                    if port_list[i + 2] == "pppoe":
+                        wan_port = "pppoe-WAN"
+                    else:
+                        wan_port = port_list[i + 1]
                     cmd = "ifconfig " + wan_port
                     result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
                     identifier = "inet addr"
@@ -173,7 +187,10 @@ def rttyQueryWindow(MY_GUI):
             port_list = thin_interface(dev_sn)
             for i in range(len(port_list)):
                 if port_list[i] == "WAN3":
-                    wan_port = port_list[i + 1]
+                    if port_list[i + 2] == "pppoe":
+                        wan_port = "pppoe-WAN"
+                    else:
+                        wan_port = port_list[i + 1]
                     cmd = "ifconfig " + wan_port
                     result = rtty_query(cmd, dev_sn)  # 获取查询原始结果
                     identifier = "inet addr"
