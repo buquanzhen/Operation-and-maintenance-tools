@@ -212,7 +212,7 @@ def file_transfer_Window(MY_GUI):
     def file_transfer_start():
         global def_start
         MY_GUI.result_data_Text.delete(1.0, END)  # 清空结果输出框
-        def_start = 1  # 执行查询标志，0：停止 1：开始 3：暂停
+        def_start = 1  # 执行查询标志，0：停止 1：开始 2：暂停
         if radio_fileput_down_value==1: #判断文件上传或下载，1为文件上传，2为文件下载
             file_trans_put()
         elif radio_fileput_down_value==2:
@@ -394,9 +394,9 @@ def file_transfer_Window(MY_GUI):
     device_rate_TexT.grid(sticky=W,row=23, column=1)
 
 
-    query_butthon = Button(init_windown_device, text='开始传输', bg='lightblue', width=10, command=file_transfer_start)
+    query_butthon = Button(init_windown_device, text='开始', bg='lightblue', width=10, command=file_transfer_start)
     query_butthon.grid(sticky=W,row=24, column=0, columnspan=1)
-    query_butthon = Button(init_windown_device, text='结束传输', bg='lightblue', width=10, command=stop)
+    query_butthon = Button(init_windown_device, text='结束', bg='lightblue', width=10, command=stop)
     query_butthon.grid(sticky=W,row=24, column=2, columnspan=1)
     query_butthon = Button(init_windown_device, text='暂停', bg='lightblue', width=10, command=suspend)
     query_butthon.grid(row=24, column=1, columnspan=1)

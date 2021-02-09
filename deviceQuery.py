@@ -205,7 +205,7 @@ def deviceQueryWindow(MY_GUI):
     init_windown_device = Toplevel()
     check_ip_register = init_windown_device.register(utils.check_ip)
     check_port_register = init_windown_device.register(utils.check_port)
-    init_windown_device.title('设备查询')
+    init_windown_device.title('SSH设备查询')
     init_windown_device.geometry('450x600')
 
     # ssh tunnel
@@ -306,9 +306,9 @@ def deviceQueryWindow(MY_GUI):
     device_rate_TexT = Text(init_windown_device, width=13, height=1)
     device_rate_TexT.grid(sticky=W,row=16, column=1)
 
-    query_butthon = Button(init_windown_device, text='开始查询', bg='lightblue', width=10, command=device_query_start)
+    query_butthon = Button(init_windown_device, text='开始', bg='lightblue', width=10, command=device_query_start)
     query_butthon.grid(row=17, column=0, columnspan=1)
-    query_butthon = Button(init_windown_device, text='结束查询', bg='lightblue', width=10, command=stop)
+    query_butthon = Button(init_windown_device, text='结束', bg='lightblue', width=10, command=stop)
     query_butthon.grid(row=17, column=2, columnspan=1)
     query_butthon = Button(init_windown_device, text='暂停', bg='lightblue', width=10, command=suspend)
     query_butthon.grid(row=17, column=1, columnspan=1)

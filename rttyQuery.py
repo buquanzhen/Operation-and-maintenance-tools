@@ -4,7 +4,8 @@ import simplejson as simplejson
 import tkinter
 from tkinter import *
 import utils
-
+from tkinter import messagebox, filedialog
+def_start=1
 def rttyQueryWindow(MY_GUI):
     def rtty_query(cmd_str,dev_sn):
         ip=rtty_ip_text.get()
@@ -299,9 +300,10 @@ def rttyQueryWindow(MY_GUI):
                MY_GUI.result_data_Text.insert(tkinter.INSERT, "运营商：" +result+"\n")  # 输出结果到页面
                MY_GUI.result_data_Text.update()
                MY_GUI.result_data_Text.see(END)
-    def query_start():
+    def date_query():
+        global def_start
         dev_sn_list = MY_GUI.init_data_Text.get(1.0, END).strip().split('\n')  # 从页面获取sn列表
-        #print(dev_sn_list)
+        # print(dev_sn_list)
         count_sn = 0
         for dev_sn in dev_sn_list:
             # 在窗口输出当前传输设备ip
@@ -314,19 +316,38 @@ def rttyQueryWindow(MY_GUI):
             dev_rate_TexT.delete(1.0, END)
             dev_rate_TexT.insert(tkinter.INSERT, str(dev_rate))
             dev_rate_TexT.update()
-            if dev_sn:
-                MY_GUI.result_data_Text.insert(tkinter.INSERT, ("=") * 15 + dev_sn + ("=") * 15 + '\n')  # 输出结果到页面
-                MY_GUI.result_data_Text.update()
-                check=dev_model(dev_sn)     #通过查询设备类型是返回值是否为None判断是否可达
-                #print(check)
-                if check is not None:
-                   flexthinedge_query(dev_sn)
+            if def_start==1:    # 若def_start值为1则开始查询
+                if dev_sn:      #判断dev_sn 是否为空
+                    MY_GUI.result_data_Text.insert(tkinter.INSERT, ("=") * 15 + dev_sn + ("=") * 15 + '\n')  # 输出结果到页面
+                    MY_GUI.result_data_Text.update()
+                    check = dev_model(dev_sn)  # 通过查询设备类型是返回值是否为None判断是否可达
+                    # print(check)
+                    if check is not None:
+                        flexthinedge_query(dev_sn)
+                    else:
+                        utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "不可达！")
+                        continue
                 else:
-                   utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "不可达！")
-                   continue
-            else:
-                utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "设备sn不能为空！")
-
+                    utils.write_log_to_Text(MY_GUI.log_data_Text, dev_sn + "设备sn不能为空！")
+            elif def_start == 0:  # 若def_start值为0则终止查询并输出log
+                utils.write_log_to_Text(MY_GUI.log_data_Text, "文件传输终止")
+                break
+            elif def_start == 2:  # 若def_start值为2则暂停查询并弹出提示框
+                mes = messagebox.askyesno('提示', '是否继续执行')
+                if mes is True:  # 点击提示框‘YES’，继续执行查询
+                    def_start = 1
+                else:
+                    def_start = 0  # 点击提示框‘NO’，停止查询
+    def query_start():
+        global def_start
+        def_start = 1  # 执行查询标志，0：停止 1：开始 2：暂停
+        date_query()
+    def stop(): #查询结束函数，执行该函数，def_start值变为0，终止查询
+        global def_start
+        def_start = 0
+    def suspend():  #查询暂停函数，执行该函数，def_start值变为2
+        global def_start
+        def_start = 2
 
     init_windown_rtty = Toplevel()
     init_windown_rtty.title('RTTY设备查询')
@@ -360,52 +381,58 @@ def rttyQueryWindow(MY_GUI):
     rtty_logpasswd_text.set('Certus@20xx')
     rtty_logpasswd_Entry = Entry(init_windown_rtty, textvariable=rtty_logpasswd_text,width=15)
     rtty_logpasswd_Entry.grid(sticky=W, row=3, column=1)
+
     lab1 = Label(init_windown_rtty,text='-'*80)
     lab1.grid(sticky=W, row=5, column=0, columnspan=5)
+
+    ipfile_open_butthon = Button(init_windown_rtty, text='导入SN', bg='lightblue', width=10,
+                                 command=lambda: utils.get_file_path(MY_GUI))
+    ipfile_open_butthon.grid(sticky=W, row=6, column=0)
+
     dev_type = Label(init_windown_rtty, text='FlexThinEdge:')
-    dev_type.grid(sticky=W,row=6, column=0)
+    dev_type.grid(sticky=W,row=7, column=0)
 
     dev_info = Label(init_windown_rtty, text='设备信息:')
-    dev_info.grid(sticky=W,row=7, column=0)
+    dev_info.grid(sticky=W,row=8, column=0)
     #设备名称
     name_select = IntVar()
     device_name = Checkbutton(init_windown_rtty, text='设备名称', variable=name_select,onvalue=1,offvalue=0)
-    device_name.grid(sticky=W,row=8, column=0)
+    device_name.grid(sticky=W,row=9, column=0)
     # 设备型号
     model_select = IntVar()
     device_model = Checkbutton(init_windown_rtty, text='设备型号', variable=model_select,onvalue=1,offvalue=0)
-    device_model.grid(sticky=W, row=8, column=1)
+    device_model.grid(sticky=W, row=9, column=1)
     # 版本
     dev_version_select = IntVar()
     device_version = Checkbutton(init_windown_rtty, text='设备版本', variable=dev_version_select,onvalue=1,offvalue=0)
-    device_version.grid(sticky=W, row=8, column=2)
+    device_version.grid(sticky=W, row=9, column=2)
     # 模式 route模式  bridge模式
     dev_mode_select = IntVar()
     device_mode = Checkbutton(init_windown_rtty, text='运行模式', variable=dev_mode_select,onvalue=1,offvalue=0)
-    device_mode.grid(sticky=W, row=8, column=3)
+    device_mode.grid(sticky=W, row=9, column=3)
 
     dev_intface = Label(init_windown_rtty, text='接口:')
-    dev_intface.grid(sticky=W,row=10, column=0)
+    dev_intface.grid(sticky=W,row=11, column=0)
     #设备wan1接口ip
     wan1_select = IntVar()
     device_wan1 = Checkbutton(init_windown_rtty, text='WAN1地址',variable=wan1_select,onvalue=1,offvalue=0)
-    device_wan1.grid(sticky=W,row=11, column=0)
+    device_wan1.grid(sticky=W,row=12, column=0)
     #设备wan2接口ip
     wan2_select = IntVar()
     device_wan2 = Checkbutton(init_windown_rtty, text='WAN2地址', variable=wan2_select,onvalue=1,offvalue=0)
-    device_wan2.grid(sticky=W,row=11, column=1)
+    device_wan2.grid(sticky=W,row=12, column=1)
     #设备LTE接口ip
     wan3_select = IntVar()
     device_wan3 = Checkbutton(init_windown_rtty, text='WAN3地址', variable=wan3_select,onvalue=1,offvalue=0)
-    device_wan3.grid(sticky=W,row=11, column=2)
+    device_wan3.grid(sticky=W,row=12, column=2)
     # 设备LAN口地址
     lan_select = IntVar()
     device_lan = Checkbutton(init_windown_rtty, text='LAN地址', variable=lan_select,onvalue=1,offvalue=0)
-    device_lan.grid(sticky=W, row=11, column=3)
+    device_lan.grid(sticky=W, row=12, column=3)
     # 设备vlan
     vlan_select = IntVar()
     device_vlan = Checkbutton(init_windown_rtty, text='VLAN', variable=vlan_select,onvalue=1,offvalue=0)
-    device_vlan.grid(sticky=W, row=12, column=0)
+    device_vlan.grid(sticky=W, row=13, column=0)
 
     dev_lte = Label(init_windown_rtty, text='LTE:')
     dev_lte.grid(sticky=W,row=14, column=0)
@@ -463,8 +490,12 @@ def rttyQueryWindow(MY_GUI):
     dev_rate_TexT = Text(init_windown_rtty, width=15, height=1)
     dev_rate_TexT.grid(sticky=W, row=21, column=1, columnspan=2)
 
-    db_sql_butthon = Button(init_windown_rtty, text='查询', bg='lightblue', width=8, command=query_start)
-    db_sql_butthon.grid(sticky=W,row=25, column=0)
+    rtty_start_butthon = Button(init_windown_rtty, text='开始', bg='lightblue', width=8, command=query_start)
+    rtty_start_butthon.grid(sticky=W,row=25, column=0)
+    rtty_suspend_butthon = Button(init_windown_rtty, text='暂停', bg='lightblue', width=10, command=suspend)
+    rtty_suspend_butthon.grid(sticky=W, row=25, column=1, columnspan=1)
+    rtty_stop_butthon = Button(init_windown_rtty, text='结束', bg='lightblue', width=10, command=stop)
+    rtty_stop_butthon.grid(row=25, column=2, columnspan=1)
 
     select_dev_infolist=[name_select,model_select,dev_version_select,dev_mode_select]
     select_dev_portlist=[wan1_select,wan2_select,wan3_select,lan_select,vlan_select]
@@ -507,26 +538,26 @@ def rttyQueryWindow(MY_GUI):
     # r_fileput_down_value.set(1)  # 默认value为1的单选按钮被选中
     radio_thin_select_all = Radiobutton(init_windown_rtty, text="全选", variable=r_thinselect_value, value=1,
                                        command=thin_select_all)
-    radio_thin_select_all.grid(sticky=W, row=6, column=1)
+    radio_thin_select_all.grid(sticky=W, row=7, column=1)
     radio_thin_unselect_all = Radiobutton(init_windown_rtty, text="全不选", variable=r_thinselect_value, value=2,
                                        command=thin_unselect_all)
-    radio_thin_unselect_all.grid(sticky=W, row=6, column=2)
+    radio_thin_unselect_all.grid(sticky=W, row=7, column=2)
 
     r_dev_info_value = IntVar()  # 创建一个Int类型的容器,将单选按钮绑定到同一个容器上
     radio_dev_info_select_all = Radiobutton(init_windown_rtty, text="全选", variable=r_dev_info_value, value=1,
                                         command=dev_info_select_all)
-    radio_dev_info_select_all.grid(sticky=W, row=7, column=1)
+    radio_dev_info_select_all.grid(sticky=W, row=8, column=1)
     radio_dev_info_unselect_all = Radiobutton(init_windown_rtty, text="全不选", variable=r_dev_info_value, value=2,
                                           command=dev_info_unselect_all)
-    radio_dev_info_unselect_all.grid(sticky=W, row=7, column=2)
+    radio_dev_info_unselect_all.grid(sticky=W, row=8, column=2)
 
     r_dev_port_value = IntVar()  # 创建一个Int类型的容器,将单选按钮绑定到同一个容器上
     radio_dev_port_select_all = Radiobutton(init_windown_rtty, text="全选", variable=r_dev_port_value, value=1,
                                             command=dev_port_select_all)
-    radio_dev_port_select_all.grid(sticky=W, row=10, column=1)
+    radio_dev_port_select_all.grid(sticky=W, row=11, column=1)
     radio_dev_port_unselect_all = Radiobutton(init_windown_rtty, text="全不选", variable=r_dev_port_value, value=2,
                                               command=dev_port_unselect_all)
-    radio_dev_port_unselect_all.grid(sticky=W, row=10, column=2)
+    radio_dev_port_unselect_all.grid(sticky=W, row=11, column=2)
 
     r_lte_value = IntVar()  # 创建一个Int类型的容器,将单选按钮绑定到同一个容器上
     radio_lte_select_all = Radiobutton(init_windown_rtty, text="全选", variable=r_lte_value, value=1,

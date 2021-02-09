@@ -67,7 +67,7 @@ def mysql_connect(db_ip, db_name, db_pass,log_data_Text, *sql_cmd):
     # 打开数据库连接,判断数据库连接是否成功
     data = ''
     try:
-        db_test = pymysql.connect(db_ip, db_name, db_pass, 'db_flex_sms')
+        db_test = pymysql.connect(host=db_ip, user=db_name, password=db_pass, database='db_flex_sms')
         # 使用cursor()方法获取操作游标
         cursor = db_test.cursor()
         cursor.execute('select version()')
@@ -81,7 +81,7 @@ def mysql_connect(db_ip, db_name, db_pass,log_data_Text, *sql_cmd):
     except Exception as e:
         write_log_to_Text(log_data_Text, '数据库连接失败!'+str(e))
     if data == 'link ok':
-        db = pymysql.connect(db_ip, db_name, db_pass, 'db_flex_sms')
+        db = pymysql.connect(host=db_ip, user=db_name, password=db_pass, database='db_flex_sms')
         # 使用cursor()方法获取操作游标
         cursor = db.cursor()
         sql_value = []
